@@ -1,0 +1,13 @@
+package com.sysman.prueba_tecnica_sysman_backend.constants;
+
+public class FieldValueConstants {
+
+    private FieldValueConstants() {}
+
+    public static final String STATUS_ACTIVE = "active";
+    public static final String STATUS_AVAILABLE = "available";
+    public static final String STATUS_ASSIGNED = "assigned";
+
+    public static final String TYPE_ELECTRONIC = "electronic";
+    public static final String TYPE_FURNITURE = "furniture";
+}
