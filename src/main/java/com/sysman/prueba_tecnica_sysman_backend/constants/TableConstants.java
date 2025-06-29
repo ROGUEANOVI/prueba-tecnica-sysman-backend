@@ -1,0 +1,10 @@
+package com.sysman.prueba_tecnica_sysman_backend.constants;
+
+public class TableConstants {
+
+    private TableConstants() {}
+
+    public static final String MATERIAL = "material";
+    public static final String CITY = "city";
+    public static final String DEPARTMENT = "department";
+}
