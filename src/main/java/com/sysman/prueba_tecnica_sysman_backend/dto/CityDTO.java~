@@ -1,0 +1,10 @@
+package com.sysman.prueba_tecnica_sysman_backend.dto;
+
+public class CityDTO {
+
+    private String code;
+
+    private String name;
+
+    private DepartmentDTO department;
+}

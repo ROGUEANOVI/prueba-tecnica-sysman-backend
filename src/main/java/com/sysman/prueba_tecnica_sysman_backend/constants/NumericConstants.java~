@@ -11,9 +11,4 @@ public class NumericConstants {
     public static final int CITY_NAME_MAX_LENGTH = 100;
     public static final int DEPARTMENT_NAME_MAX_LENGTH = 100;
     public static final int CODE_MAX_LENGTH = 10;
-
-    public static final int PRICE_MIN = 0;
-    public static final int DEFAULT_PAGE_SIZE = 20;
-
-    public static final long JWT_EXPIRATION_MS = 3600000L; // 1 hora
 }
