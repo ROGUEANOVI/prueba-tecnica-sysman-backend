@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: prueba-tecnica-sysman-backend
+  datasource:
+    url: jdbc:postgresql://localhost:54321/sysman_db
+    driver-class-name: org.postgresql.Driver
+    username: rogueanovi
+    password: @Postgresql15
+
+  jpa:
+    show-sql: true
+    hibernate.ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  security:
+    user:
+      name: admin
+      password: admin
+      roles: ADMIN
+jwt:
+  secret:
+    key: 9f99a1aae8ff512c319f04cebfa172693816c3203b68f7e3d1bae52167eda05c
+  expiration: 3600000
+  issuer: prueba_tecnica_sysman_backend
+
