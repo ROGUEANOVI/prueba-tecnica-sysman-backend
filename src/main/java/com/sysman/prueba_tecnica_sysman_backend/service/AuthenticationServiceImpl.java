@@ -1,6 +1,7 @@
 package com.sysman.prueba_tecnica_sysman_backend.service;
 
 import com.sysman.prueba_tecnica_sysman_backend.constants.ExceptionMessages;
+import com.sysman.prueba_tecnica_sysman_backend.constants.LogMessages;
 import com.sysman.prueba_tecnica_sysman_backend.constants.SecurityConstants;
 import com.sysman.prueba_tecnica_sysman_backend.dto.AuthenticationRequest;
 import com.sysman.prueba_tecnica_sysman_backend.dto.AuthenticationResponse;
@@ -13,6 +14,7 @@ import com.sysman.prueba_tecnica_sysman_backend.repository.RoleRepository;
 import com.sysman.prueba_tecnica_sysman_backend.repository.UserRepository;
 import com.sysman.prueba_tecnica_sysman_backend.security.JwtService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,6 +25,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -50,6 +53,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .build();
 
         userRepository.save(user);
+        log.info(LogMessages.USER_CREATED, request.getEmail());
     }
 
     @Override
@@ -70,6 +74,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         String jwtToken = jwtService.generateToken(extraClaims, userDetails);
 
+        log.info(LogMessages.USER_AUTHENTICATED, request.getEmail());
         return new AuthenticationResponse(jwtToken);
     }
 }

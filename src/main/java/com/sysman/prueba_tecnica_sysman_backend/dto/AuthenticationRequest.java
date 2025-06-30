@@ -12,12 +12,12 @@ import lombok.Setter;
 @Setter
 public class AuthenticationRequest {
 
-    @Schema(example = OpenApiConstants.EMAIL_EXAMPLE)
+    @Schema(example = OpenApiConstants.LOGIN_EMAIL_EXAMPLE)
     @Email(message = SecurityConstants.EMAIL_INVALID)
     @NotBlank(message = SecurityConstants.EMAIL_REQUIRED)
     private String email;
 
-    @Schema(example = OpenApiConstants.PASSWORD_EXAMPLE)
+    @Schema(example = OpenApiConstants.LOGIN_PASSWORD_EXAMPLE)
     @NotBlank(message = SecurityConstants.PASSWORD_REQUIRED)
     private String password;
 }

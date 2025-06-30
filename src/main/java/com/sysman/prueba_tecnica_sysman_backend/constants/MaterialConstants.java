@@ -46,7 +46,7 @@ public class MaterialConstants {
     public static final String SALE_DATE_EXAMPLE = "2024-06-15";
 
     public static final String CITY_CODE_DESCRIPTION = "Código DANE de la ciudad donde se encuentra el material";
-    public static final String CITY_CODE_EXAMPLE = "11001";
+    public static final String CITY_CODE_EXAMPLE = "25001";
 
     // MaterialResponseDTO
     public static final String ID_DESCRIPTION = "Identificador único del material";

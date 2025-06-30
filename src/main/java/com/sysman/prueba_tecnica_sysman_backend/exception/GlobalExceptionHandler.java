@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.TypeMismatchException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.ErrorResponse;
@@ -30,10 +31,24 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap(ExceptionMessages.MESSAGE, ex.getMessage()));
     }
 
+    @ExceptionHandler(CityNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleCityNotFound(CityNotFoundException ex) {
+
+        log.warn(LogMessages.CITY_NOT_FOUND, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap(ExceptionMessages.MESSAGE, ex.getMessage()));
+    }
+
     @ExceptionHandler(InvalidMaterialDatesException.class)
     public ResponseEntity<Map<String, String>> handleInvalidMaterialDates(InvalidMaterialDatesException ex) {
 
         log.warn(LogMessages.INVALID_MATERIAL_DATES, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap(ExceptionMessages.MESSAGE, ex.getMessage()));
+    }
+
+    @ExceptionHandler(DuplicateMaterialException.class)
+    public ResponseEntity<Map<String, String>> handleDuplicateMaterial(DuplicateMaterialException ex) {
+
+        log.warn(LogMessages.DUPLICATE_MATERIAL, ex.getMessage());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap(ExceptionMessages.MESSAGE, ex.getMessage()));
     }
 
@@ -53,6 +68,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<Map<String, String>> handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap(ExceptionMessages.MESSAGE, ExceptionMessages.INVALID_DATE_FORMAT));
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidFormat(HttpMessageNotReadableException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap(ExceptionMessages.MESSAGE, ExceptionMessages.INVALID_DATE_FORMAT));
     }
 

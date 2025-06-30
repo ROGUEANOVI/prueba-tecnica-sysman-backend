@@ -5,9 +5,12 @@ import com.sysman.prueba_tecnica_sysman_backend.constants.LogMessages;
 import com.sysman.prueba_tecnica_sysman_backend.dto.MaterialRequestDTO;
 import com.sysman.prueba_tecnica_sysman_backend.dto.MaterialResponseDTO;
 import com.sysman.prueba_tecnica_sysman_backend.entity.Material;
+import com.sysman.prueba_tecnica_sysman_backend.exception.CityNotFoundException;
+import com.sysman.prueba_tecnica_sysman_backend.exception.DuplicateMaterialException;
 import com.sysman.prueba_tecnica_sysman_backend.exception.InvalidMaterialDatesException;
 import com.sysman.prueba_tecnica_sysman_backend.exception.MaterialNotFoundException;
 import com.sysman.prueba_tecnica_sysman_backend.mapper.MaterialMapper;
+import com.sysman.prueba_tecnica_sysman_backend.repository.CityRepository;
 import com.sysman.prueba_tecnica_sysman_backend.repository.MaterialRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,15 +29,19 @@ public class MaterialServiceImpl implements MaterialService {
 
     private final MaterialMapper materialMapper;
 
+    private final CityRepository cityRepository;
+
 
     @Override
-    public List<MaterialResponseDTO> searchMaterials(String type, String city, LocalDate purchaseDate) {
+    public List<MaterialResponseDTO> searchMaterials(String type, String cityCode, LocalDate purchaseDate) {
+
         List<Material> materials = materialRepository.findAll().stream()
                 .filter(material -> type == null || material.getType().equalsIgnoreCase(type))
-                .filter(material -> city == null || material.getCity().getCode().equalsIgnoreCase(city))
+                .filter(material -> cityCode == null || material.getCity().getCode().equalsIgnoreCase(cityCode))
                 .filter(material -> purchaseDate == null || purchaseDate.equals(material.getPurchaseDate()))
                 .toList();
 
+        log.info(LogMessages.SEARCHING_MATERIALS, type, cityCode, purchaseDate);
         return materials.stream()
                 .map(materialMapper::toDto)
                 .collect(Collectors.toList());
@@ -42,15 +49,20 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public MaterialResponseDTO getMaterialById(Long id) {
+
         Material material = materialRepository.findById(id)
                 .orElseThrow(() -> new MaterialNotFoundException(ExceptionMessages.MATERIAL_NOT_FOUND, id));
 
+        log.info(LogMessages.GETTING_MATERIAL, id);
         return materialMapper.toDto(material);
     }
 
 
     @Override
     public MaterialResponseDTO createMaterial(MaterialRequestDTO requestDTO) {
+
+        validateUniqueMaterial(requestDTO);
+        validateCity(requestDTO.getCityCode());
         validateDates(requestDTO.getPurchaseDate(), requestDTO.getSaleDate());
 
         Material material = materialMapper.toEntity(requestDTO);
@@ -61,10 +73,12 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public void updateMaterial(Long id, MaterialRequestDTO requestDTO) {
+    public MaterialResponseDTO updateMaterial(Long id, MaterialRequestDTO requestDTO) {
+
         Material existing = materialRepository.findById(id)
                 .orElseThrow(() -> new MaterialNotFoundException(ExceptionMessages.MATERIAL_NOT_FOUND, id));
 
+        validateCity(requestDTO.getCityCode());
         validateDates(requestDTO.getPurchaseDate(), requestDTO.getSaleDate());
 
         Material updated = materialMapper.toEntity(requestDTO);
@@ -73,11 +87,12 @@ public class MaterialServiceImpl implements MaterialService {
         Material saved = materialRepository.save(updated);
 
         log.info(LogMessages.UPDATING_MATERIAL, saved.getId());
-        materialMapper.toDto(saved);
+        return materialMapper.toDto(saved);
     }
 
     @Override
     public void deleteMaterial(Long id) {
+
         Material material = materialRepository.findById(id)
                 .orElseThrow(() -> new MaterialNotFoundException(ExceptionMessages.MATERIAL_NOT_FOUND, id));
 
@@ -88,6 +103,23 @@ public class MaterialServiceImpl implements MaterialService {
     private void validateDates(LocalDate purchaseDate, LocalDate saleDate) {
         if (purchaseDate != null && saleDate != null && purchaseDate.isAfter(saleDate)) {
             throw new InvalidMaterialDatesException(ExceptionMessages.INVALID_DATES);
+        }
+    }
+
+    private void validateCity(String cityCode) {
+        cityRepository.findByCode(cityCode)
+                .orElseThrow(() -> new CityNotFoundException(ExceptionMessages.CITY_NOT_FOUND, cityCode));
+    }
+
+    private void validateUniqueMaterial(MaterialRequestDTO dto) {
+        boolean exists = materialRepository.existsByNameAndTypeAndCity_Code(
+                dto.getName(),
+                dto.getType(),
+                dto.getCityCode()
+        );
+
+        if (exists) {
+            throw new DuplicateMaterialException(ExceptionMessages.DUPLICATE_MATERIAL, dto.getName(), dto.getType(), dto.getCityCode());
         }
     }
 }

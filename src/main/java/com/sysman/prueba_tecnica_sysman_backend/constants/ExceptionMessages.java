@@ -15,5 +15,9 @@ public class ExceptionMessages {
 
     public static final String FORBIDDEN = "Acceso denegado";
 
+    public static final String CITY_NOT_FOUND = "Ciudad con ID: %s no encontrada";
+
+    public static final String DUPLICATE_MATERIAL = "Ya existe un material con mismo el nombre: %s, tipo: %s y codigo de ciudad: %s";
+
     private ExceptionMessages() {}
 }
