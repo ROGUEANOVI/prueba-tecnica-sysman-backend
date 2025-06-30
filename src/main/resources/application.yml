@@ -17,11 +17,14 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
 
-  security:
-    user:
-      name: admin
-      password: admin
-      roles: ADMIN
+
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /api-docs
+
 jwt:
   secret:
     key: 9f99a1aae8ff512c319f04cebfa172693816c3203b68f7e3d1bae52167eda05c

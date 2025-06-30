@@ -33,6 +33,20 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.singletonMap(ExceptionMessages.MESSAGE, ex.getMessage()));
     }
 
+    @ExceptionHandler(RoleNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleRoleNotFound(RoleNotFoundException ex) {
+
+        log.warn(LogMessages.ROLE_NOT_FOUND, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap(ExceptionMessages.MESSAGE, ex.getMessage()));
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<Map<String, String>> handleUserAlreadyExists(UserAlreadyExistsException ex) {
+
+        log.warn(LogMessages.USER_ALREADY_EXISTS, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(Collections.singletonMap(ExceptionMessages.MESSAGE, ex.getMessage()));
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Map<String, String>> handleValidationException(MethodArgumentNotValidException ex) {
 
@@ -58,6 +72,13 @@ public class GlobalExceptionHandler {
         }
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errors);
+    }
+
+    @ExceptionHandler(InvalidJwtTokenException.class)
+    public ResponseEntity<Map<String, String>> handleInvalidJwtToken(InvalidJwtTokenException ex) {
+        log.warn(LogMessages.INVALID_TOKEN, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Collections.singletonMap("error", ex.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)

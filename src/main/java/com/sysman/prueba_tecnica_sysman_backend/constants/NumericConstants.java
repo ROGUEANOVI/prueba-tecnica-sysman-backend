@@ -12,4 +12,6 @@ public class NumericConstants {
     public static final int DEPARTMENT_NAME_MAX_LENGTH = 100;
     public static final int CODE_MAX_LENGTH = 10;
     public static final int PRICE_MIN = 0;
+    public static final int ROLE_NAME_MAX_LENGTH = 100;
+
 }
