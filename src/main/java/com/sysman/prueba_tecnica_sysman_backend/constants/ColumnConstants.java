@@ -15,4 +15,6 @@ public class ColumnConstants {
     public static final String STATUS = "status";
     public static final String CITY_CODE = "city_code";
     public static final String DEPARTMENT_CODE = "department_code";
+    public static final String USER_ID = "user_id";
+    public static final String ROLE_ID = "role_id";
 }

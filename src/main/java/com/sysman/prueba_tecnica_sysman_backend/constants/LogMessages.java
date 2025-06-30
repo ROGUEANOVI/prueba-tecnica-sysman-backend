@@ -12,4 +12,9 @@ public class LogMessages {
     public static final String INVALID_MATERIAL_DATES = "Invalid material dates: {}";
     public static final String UNEXPECTED_ERROR = "Unexpected error: {}";
 
+    public static final String USER_NOT_FOUND = "User not found with email: {}";
+    public static final String INVALID_TOKEN = "Invalid JWT token: {}";
+
+    public static final String ROLE_NOT_FOUND = "Role not found: {}";
+    public static final String USER_ALREADY_EXISTS = "User already exists: {}";
 }
