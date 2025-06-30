@@ -28,39 +28,26 @@ public class MaterialServiceImpl implements MaterialService {
 
 
     @Override
-    public List<MaterialResponseDTO> getAllMaterials() {
-        return materialRepository.findAll().stream()
+    public List<MaterialResponseDTO> searchMaterials(String type, String city, LocalDate purchaseDate) {
+        List<Material> materials = materialRepository.findAll().stream()
+                .filter(material -> type == null || material.getType().equalsIgnoreCase(type))
+                .filter(material -> city == null || material.getCity().getCode().equalsIgnoreCase(city))
+                .filter(material -> purchaseDate == null || purchaseDate.equals(material.getPurchaseDate()))
+                .toList();
+
+        return materials.stream()
                 .map(materialMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<MaterialResponseDTO> getMaterialsByType(String type) {
-        return materialRepository.findByTypeIgnoreCase(type).stream()
-                .map(materialMapper::toDto)
-                .collect(Collectors.toList());
+    public MaterialResponseDTO getMaterialById(Long id) {
+        Material material = materialRepository.findById(id)
+                .orElseThrow(() -> new MaterialNotFoundException(ExceptionMessages.MATERIAL_NOT_FOUND, id));
+
+        return materialMapper.toDto(material);
     }
 
-    @Override
-    public List<MaterialResponseDTO> getMaterialsByPurchaseDate(LocalDate date) {
-        return materialRepository.findByPurchaseDate(date).stream()
-                .map(materialMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<MaterialResponseDTO> getMaterialsByTypeAndPurchaseDate(String type, LocalDate date) {
-        return materialRepository.findByTypeIgnoreCaseAndPurchaseDate(type, date).stream()
-                .map(materialMapper::toDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<MaterialResponseDTO> getMaterialsByCityCode(String cityCode) {
-        return materialRepository.findByCity_CodeIgnoreCase(cityCode).stream()
-                .map(materialMapper::toDto)
-                .collect(Collectors.toList());
-    }
 
     @Override
     public MaterialResponseDTO createMaterial(MaterialRequestDTO requestDTO) {
@@ -74,7 +61,7 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public MaterialResponseDTO updateMaterial(Long id, MaterialRequestDTO requestDTO) {
+    public void updateMaterial(Long id, MaterialRequestDTO requestDTO) {
         Material existing = materialRepository.findById(id)
                 .orElseThrow(() -> new MaterialNotFoundException(ExceptionMessages.MATERIAL_NOT_FOUND, id));
 
@@ -86,7 +73,7 @@ public class MaterialServiceImpl implements MaterialService {
         Material saved = materialRepository.save(updated);
 
         log.info(LogMessages.UPDATING_MATERIAL, saved.getId());
-        return materialMapper.toDto(saved);
+        materialMapper.toDto(saved);
     }
 
     @Override
