@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -41,6 +42,7 @@ public class MaterialRequestDTO {
 
     @Schema(description = MaterialConstants.PURCHASE_DATE_DESCRIPTION, example = MaterialConstants.PURCHASE_DATE_EXAMPLE)
     @NotNull(message = ValidationMessages.FIELD_REQUIRED)
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate purchaseDate;
 
     @Schema(description = MaterialConstants.SALE_DATE_DESCRIPTION, example = MaterialConstants.SALE_DATE_EXAMPLE)

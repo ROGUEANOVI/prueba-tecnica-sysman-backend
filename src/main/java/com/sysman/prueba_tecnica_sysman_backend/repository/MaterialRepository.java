@@ -8,11 +8,5 @@ import java.util.List;
 
 public interface MaterialRepository extends JpaRepository<Material, Long> {
 
-    List<Material> findByTypeIgnoreCase(String type);
-
-    List<Material> findByPurchaseDate(LocalDate date);
-
-    List<Material> findByCity_CodeIgnoreCase(String cityCode);
-
-    List<Material> findByTypeIgnoreCaseAndPurchaseDate(String type, LocalDate purchaseDate);
+    boolean existsByNameAndTypeAndCity_Code(String name, String type, String cityCode);
 }

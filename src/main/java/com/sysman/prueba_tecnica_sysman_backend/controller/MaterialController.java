@@ -35,11 +35,11 @@ public class MaterialController {
     @GetMapping
     public ResponseEntity<List<MaterialResponseDTO>> searchMaterials(
             @RequestParam(required = false) String type,
-            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String cityCode,
             @RequestParam(required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate purchaseDate
     ) {
-        return ResponseEntity.ok(materialService.searchMaterials(type, city, purchaseDate));
+        return ResponseEntity.ok(materialService.searchMaterials(type, cityCode, purchaseDate));
     }
 
     @Operation(summary = MaterialConstants.SUMMARY_GET_BY_ID)
@@ -71,19 +71,18 @@ public class MaterialController {
 
     @Operation(summary = MaterialConstants.SUMMARY_UPDATE)
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "204", description = MaterialConstants.DESC_UPDATED),
+        @ApiResponse(responseCode = "200", description = MaterialConstants.DESC_UPDATED),
         @ApiResponse(responseCode = "400", description =MaterialConstants.BAD_REQUEST_RESPONSE),
         @ApiResponse(responseCode = "401", description =MaterialConstants.UNAUTHORIZED_RESPONSE),
         @ApiResponse(responseCode = "403", description =MaterialConstants.FORBIDDEN_RESPONSE)
     })
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateMaterial(
+    public ResponseEntity<MaterialResponseDTO> updateMaterial(
             @PathVariable Long id,
             @Valid @RequestBody MaterialRequestDTO request
     ) {
-        materialService.updateMaterial(id, request);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(materialService.updateMaterial(id, request));
     }
 
     @Operation(summary = MaterialConstants.SUMMARY_DELETE)

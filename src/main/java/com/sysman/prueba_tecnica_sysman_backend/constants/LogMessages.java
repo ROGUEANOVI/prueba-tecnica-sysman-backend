@@ -2,6 +2,18 @@ package com.sysman.prueba_tecnica_sysman_backend.constants;
 
 public class LogMessages {
 
+    public static final String DUPLICATE_MATERIAL = "Duplicate material: {}";
+
+    public static final String USER_CREATED = "User created: {}";
+
+    public static final String USER_AUTHENTICATED = "User authenticated: {}";
+
+    public static final String SEARCHING_MATERIALS = "Searching materials: {}";
+
+    public static final String GETTING_MATERIAL = "Getting material: {}";
+
+    public static final String CITY_NOT_FOUND = "City not found: {}";
+
     private LogMessages() {}
 
     public static final String CREATING_MATERIAL = "Creating material with type: {}";
