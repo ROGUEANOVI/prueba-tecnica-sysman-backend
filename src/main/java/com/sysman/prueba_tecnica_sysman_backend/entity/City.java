@@ -1,0 +1,39 @@
+package com.sysman.prueba_tecnica_sysman_backend.entity;
+
+import com.sysman.prueba_tecnica_sysman_backend.constants.ColumnConstants;
+import com.sysman.prueba_tecnica_sysman_backend.constants.NumericConstants;
+import com.sysman.prueba_tecnica_sysman_backend.constants.TableConstants;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+
+import java.util.List;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Table(name = TableConstants.CITY)
+public class City {
+
+    @Id
+    @Column(name = ColumnConstants.CODE, length = NumericConstants.CODE_MAX_LENGTH, nullable = false, unique = true)
+    @Size(max = NumericConstants.CODE_MAX_LENGTH)
+    @NotBlank
+    private String code;
+
+    @Column(name = ColumnConstants.NAME, length = NumericConstants.CITY_NAME_MAX_LENGTH, nullable = false)
+    @Size(max = NumericConstants.NAME_MAX_LENGTH)
+    @NotBlank
+    private String name;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = ColumnConstants.DEPARTMENT_CODE, nullable = false)
+    private Department department;
+
+    @OneToMany(mappedBy = TableConstants.CITY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Material> materials;
+}

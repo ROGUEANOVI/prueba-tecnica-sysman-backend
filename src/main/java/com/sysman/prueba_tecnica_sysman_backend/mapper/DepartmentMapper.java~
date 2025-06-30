@@ -1,0 +1,12 @@
+package com.sysman.prueba_tecnica_sysman_backend.mapper;
+
+import com.sysman.prueba_tecnica_sysman_backend.constants.MapperConstants;
+import org.mapstruct.Mapper;
+import org.springframework.stereotype.Component;
+
+@Component
+@Mapper(componentModel = MapperConstants.SPRING)
+public interface DepartmentMapper {
+
+    
+}

@@ -1,0 +1,50 @@
+package com.sysman.prueba_tecnica_sysman_backend.entity;
+
+import com.sysman.prueba_tecnica_sysman_backend.constants.ColumnConstants;
+import com.sysman.prueba_tecnica_sysman_backend.constants.NumericConstants;
+import com.sysman.prueba_tecnica_sysman_backend.constants.TableConstants;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+@Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Table(name = TableConstants.CITY)
+public class Material {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = ColumnConstants.ID)
+    private Long id;
+
+    @Column(name = ColumnConstants.NAME, nullable = false, length = NumericConstants.NAME_MAX_LENGTH)
+    private String name;
+
+    @Column(name = ColumnConstants.DESCRIPTION, length = NumericConstants.DESCRIPTION_MAX_LENGTH)
+    private String description;
+
+    @Column(name = ColumnConstants.TYPE, nullable = false, length = NumericConstants.TYPE_MAX_LENGTH)
+    private String type;
+
+    @Column(name = ColumnConstants.PRICE, nullable = false)
+    private BigDecimal price;
+
+    @Column(name = ColumnConstants.PURCHASE_DATE, nullable = false)
+    private LocalDate purchaseDate;
+
+    @Column(name = ColumnConstants.SALE_DATE)
+    private LocalDate saleDate;
+
+    @Column(name = ColumnConstants.STATUS, nullable = false, length = NumericConstants.STATUS_MAX_LENGTH)
+    private String status;
+
+    @ManyToOne
+    @JoinColumn(name = ColumnConstants.CITY_CODE, nullable = false)
+    private City city;
+}
