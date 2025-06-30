@@ -8,19 +8,13 @@ import java.util.List;
 
 public interface MaterialService {
 
-    List<MaterialResponseDTO> getAllMaterials();
+    List<MaterialResponseDTO> searchMaterials(String type, String city, LocalDate purchaseDate);
 
-    List<MaterialResponseDTO> getMaterialsByType(String type);
-
-    List<MaterialResponseDTO> getMaterialsByPurchaseDate(LocalDate date);
-
-    List<MaterialResponseDTO> getMaterialsByTypeAndPurchaseDate(String type, LocalDate date);
-
-    List<MaterialResponseDTO> getMaterialsByCityCode(String cityCode);
+    MaterialResponseDTO getMaterialById(Long id);
 
     MaterialResponseDTO createMaterial(MaterialRequestDTO requestDTO);
 
-    MaterialResponseDTO updateMaterial(Long id, MaterialRequestDTO requestDTO);
+    void updateMaterial(Long id, MaterialRequestDTO requestDTO);
 
     void deleteMaterial(Long id);
 }
