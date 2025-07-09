@@ -5,14 +5,14 @@ spring:
   application:
     name: prueba-tecnica-sysman-backend
   datasource:
-    url: jdbc:postgresql://localhost:54321/sysman_db
+    url: ${SPRING_DATASOURCE_URL}
     driver-class-name: org.postgresql.Driver
-    username: rogueanovi
-    password: "@Postgresql15"
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
 
   jpa:
     show-sql: true
-    hibernate.ddl-auto: update
+    hibernate.ddl-auto: ${SPRING_JPA_HIBERNATE_DDL_AUTO}
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
